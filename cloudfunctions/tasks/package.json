@@ -1,0 +1,9 @@
+{
+  "name": "tasks",
+  "version": "1.0.0",
+  "description": "Today 任务 CRUD",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "subscribe",
+  "version": "1.0.0",
+  "description": "订阅消息授权 + 定时推送",
+  "main": "index.js",
+  "dependencies": { "wx-server-sdk": "~2.6.3" }
+}
