@@ -1,0 +1,47 @@
+<!--pages/remind/remind.wxml-->
+<view class="page">
+
+  <view class="hero">
+    <view class="hero-emoji">🔔</view>
+    <view class="hero-title">今日待办提醒</view>
+    <view class="hero-desc">每天 21:00 提醒你还有哪些任务没完成</view>
+  </view>
+
+  <view class="status-card">
+    <view class="status-row">
+      <view class="status-label">当前状态</view>
+      <view class="status-value {{enabled ? 'on' : 'off'}}">
+        {{enabled ? '已开启' : '未开启'}}
+      </view>
+    </view>
+    <view wx:if="{{lastAuthAt}}" class="status-row">
+      <view class="status-label">上次授权</view>
+      <view class="status-value-text">{{lastAuthAtText}}</view>
+    </view>
+  </view>
+
+  <view class="notice">
+    <view class="notice-title">📌 使用说明</view>
+    <view class="notice-line">• 微信订阅消息是"一次性"的，<text class="hl">每次推送前都需要重新授权</text></view>
+    <view class="notice-line">• 系统会在你连续 {{refreshDays}} 天未授权时，再次弹窗询问</view>
+    <view class="notice-line">• 提醒内容：今日未完成任务数 + 第一条</view>
+    <view class="notice-line">• 推送时间：每天 21:00</view>
+  </view>
+
+  <view class="action-area">
+    <button wx:if="{{!enabled}}" class="btn btn-primary" bindtap="onEnable">
+      开启提醒
+    </button>
+    <button wx:else class="btn btn-secondary" bindtap="onDisable">
+      关闭提醒
+    </button>
+  </view>
+
+  <view class="template-notice">
+    <view class="notice-title">⚙️ 配置提醒模板</view>
+    <view class="notice-line">1. 微信公众平台 → 订阅消息 → 选用模板或新增</view>
+    <view class="notice-line">2. 把模板 ID 填到 <text class="code">cloudfunctions/subscribe/index.js</text> 第 158 行</view>
+    <view class="notice-line">3. 在云开发控制台配置定时触发器：<text class="code">cloudfunctions/subscribe/</text> → 定时触发器 → Cron: <text class="code">0 21 * * * *</text></view>
+  </view>
+
+</view>

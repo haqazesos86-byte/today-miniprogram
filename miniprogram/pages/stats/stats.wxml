@@ -1,0 +1,118 @@
+<!--pages/stats/stats.wxml-->
+<view class="page">
+
+  <!-- 顶部 4 张数据卡 -->
+  <view class="stat-cards">
+    <view class="stat-card">
+      <view class="stat-num accent">{{stats.weekCreated}}</view>
+      <view class="stat-label">本周新建</view>
+    </view>
+    <view class="stat-card">
+      <view class="stat-num accent">{{stats.weekDone}}</view>
+      <view class="stat-label">本周完成</view>
+    </view>
+    <view class="stat-card">
+      <view class="stat-num accent">{{stats.completionRate}}<text class="stat-unit">%</text></view>
+      <view class="stat-label">本周完成率</view>
+    </view>
+    <view class="stat-card streak-card">
+      <view class="stat-num orange">🔥 {{stats.streak}}</view>
+      <view class="stat-label">连续打卡</view>
+    </view>
+  </view>
+
+  <!-- 累计统计 -->
+  <view class="section">
+    <view class="section-title">累计统计</view>
+    <view class="cum-grid">
+      <view class="cum-item">
+        <view class="cum-num">{{stats.totalCreated}}</view>
+        <view class="cum-label">总创建</view>
+      </view>
+      <view class="cum-item">
+        <view class="cum-num accent">{{stats.totalDone}}</view>
+        <view class="cum-label">总完成</view>
+      </view>
+      <view class="cum-item">
+        <view class="cum-num">{{stats.allTimeRate}}<text class="stat-unit">%</text></view>
+        <view class="cum-label">总完成率</view>
+      </view>
+      <view class="cum-item">
+        <view class="cum-num accent">{{stats.usedDays}}</view>
+        <view class="cum-label">使用天数</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 视图切换 tab -->
+  <view class="view-tabs">
+    <view class="view-tab {{viewMode === 'week' ? 'active' : ''}}"
+          bindtap="setView" data-mode="week">7 天</view>
+    <view class="view-tab {{viewMode === 'month' ? 'active' : ''}}"
+          bindtap="setView" data-mode="month">30 天</view>
+  </view>
+
+  <!-- 趋势图 -->
+  <view class="section">
+    <view class="section-title">{{viewMode === 'week' ? '最近 7 天' : '最近 30 天'}}</view>
+    <view class="chart-wrapper">
+      <canvas type="2d"
+              id="trendChart"
+              class="trend-chart"
+              bindtouchstart="onChartTouchStart"></canvas>
+    </view>
+  </view>
+
+  <!-- 完成率日历 -->
+  <view class="section" wx:if="{{viewMode === 'month'}}">
+    <view class="section-title">30 天完成率</view>
+    <view class="calendar-grid">
+      <view wx:for="{{calendarDays}}"
+            wx:key="date"
+            class="cal-cell {{item.hasTasks ? 'has-tasks' : ''}} {{item.percent === 100 ? 'complete' : ''}}"
+            data-date="{{item.date}}"
+            bindtap="onDateTap">
+        <view class="cal-day">{{item.dayLabel}}</view>
+        <view wx:if="{{item.hasTasks}}" class="cal-bar">
+          <view class="cal-bar-fill"
+                style="height: {{item.percent}}%; background: {{item.percent === 100 ? '#1f8a4c' : '#c7c7cc'}};"
+                ></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 每日详情列表 -->
+  <view class="section">
+    <view class="section-title">每天详情</view>
+    <view class="day-list">
+      <view wx:for="{{dayStats}}"
+            wx:key="date"
+            class="day-row">
+        <view class="day-info">
+          <view class="day-name">{{item.weekday}}</view>
+          <view class="day-date">{{item.dateLabel}}</view>
+        </view>
+        <view class="day-bar">
+          <view class="day-bar-track">
+            <view class="day-bar-fill"
+                  style="width: {{item.percent}}%; background: {{item.percent >= 100 ? '#1f8a4c' : '#c7c7cc'}};"
+                  ></view>
+          </view>
+        </view>
+        <view class="day-num">
+          <text class="day-done">{{item.done}}</text>
+          <text class="day-total">/{{item.total}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{stats.totalCreated === 0}}">
+    <view class="empty-emoji">📊</view>
+    <view class="empty-text">还没有数据</view>
+    <view class="empty-hint">去首页添加任务吧</view>
+  </view>
+
+</view>
