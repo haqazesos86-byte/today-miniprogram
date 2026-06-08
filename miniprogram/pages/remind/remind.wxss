@@ -1,136 +1,22 @@
-/* pages/remind/remind.wxss */
-
-.page {
-  min-height: 100vh;
-  padding: 60rpx 40rpx;
-  background: #fafafa;
-  box-sizing: border-box;
-}
-
-/* 顶部 */
-.hero {
-  text-align: center;
-  margin-bottom: 60rpx;
-}
-
-.hero-emoji {
-  font-size: 96rpx;
-  margin-bottom: 16rpx;
-}
-
-.hero-title {
-  font-size: 40rpx;
-  font-weight: 600;
-  color: #1d1d1f;
-  margin-bottom: 12rpx;
-}
-
-.hero-desc {
-  font-size: 28rpx;
-  color: #86868b;
-}
-
-/* 状态卡 */
-.status-card {
-  background: #ffffff;
-  padding: 32rpx;
-  margin-bottom: 32rpx;
-  border: 1rpx solid rgba(199, 199, 204, 0.3);
-}
-
-.status-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16rpx 0;
-  border-bottom: 1rpx solid rgba(199, 199, 204, 0.2);
-}
-
+.page { min-height: 100vh; padding: 60rpx 40rpx; background: #fafafa; box-sizing: border-box; }
+.hero { text-align: center; margin-bottom: 60rpx; }
+.hero-emoji { font-size: 96rpx; margin-bottom: 16rpx; }
+.hero-title { font-size: 40rpx; font-weight: 600; color: #1d1d1f; margin-bottom: 12rpx; }
+.hero-desc { font-size: 28rpx; color: #86868b; }
+.status-card { background: #fff; padding: 32rpx; margin-bottom: 32rpx; border: 1rpx solid rgba(199,199,204,0.3); }
+.status-row { display: flex; justify-content: space-between; align-items: center; padding: 16rpx 0; border-bottom: 1rpx solid rgba(199,199,204,0.2); }
 .status-row:last-child { border-bottom: none; }
-
-.status-label {
-  font-size: 28rpx;
-  color: #86868b;
-}
-
-.status-value {
-  font-size: 32rpx;
-  font-weight: 600;
-}
-
-.status-value.on { color: #1f8a4c; }
-.status-value.off { color: #c7c7cc; }
-
-.status-value-text {
-  font-size: 28rpx;
-  color: #1d1d1f;
-}
-
-/* 说明 */
-.notice {
-  background: #ffffff;
-  padding: 32rpx;
-  margin-bottom: 32rpx;
-  border: 1rpx solid rgba(199, 199, 204, 0.3);
-}
-
-.notice-title {
-  font-size: 28rpx;
-  font-weight: 600;
-  color: #1d1d1f;
-  margin-bottom: 16rpx;
-}
-
-.notice-line {
-  font-size: 26rpx;
-  color: #4d4d4f;
-  line-height: 1.6;
-  margin-bottom: 8rpx;
-}
-
+.status-label { font-size: 28rpx; color: #86868b; }
+.status-value { font-size: 32rpx; font-weight: 600; }
+.status-value.on { color: #1f8a4c; } .status-value.off { color: #c7c7cc; }
+.status-value-text { font-size: 28rpx; color: #1d1d1f; }
+.notice { background: #fff; padding: 32rpx; margin-bottom: 32rpx; border: 1rpx solid rgba(199,199,204,0.3); }
+.notice-title { font-size: 28rpx; font-weight: 600; color: #1d1d1f; margin-bottom: 16rpx; }
+.notice-line { font-size: 26rpx; color: #4d4d4f; line-height: 1.6; margin-bottom: 8rpx; }
 .hl { color: #1f8a4c; font-weight: 500; }
-.code {
-  font-family: 'SF Mono', Menlo, monospace;
-  font-size: 22rpx;
-  background: #f0f0f0;
-  padding: 2rpx 8rpx;
-  color: #1d1d1f;
-}
-
-/* 按钮区 */
-.action-area {
-  margin-bottom: 32rpx;
-}
-
-.btn {
-  display: block;
-  width: 100%;
-  padding: 28rpx 0;
-  text-align: center;
-  font-size: 32rpx;
-  font-weight: 500;
-  border: none;
-  border-radius: 0;
-}
-
-.btn-primary {
-  background: #1f8a4c;
-  color: #ffffff;
-}
-
-.btn-primary::after { border: none; }
-
-.btn-secondary {
-  background: #f5f5f7;
-  color: #1d1d1f;
-  border: 1rpx solid rgba(199, 199, 204, 0.5);
-}
-
-.btn-secondary::after { border: none; }
-
-/* 配置说明 */
-.template-notice {
-  background: #fffbe6;
-  padding: 32rpx;
-  border: 1rpx solid #ffe58f;
-}
+.code { font-family: 'SF Mono', Menlo, monospace; font-size: 22rpx; background: #f0f0f0; padding: 2rpx 8rpx; color: #1d1d1f; }
+.action-area { margin-bottom: 32rpx; }
+.btn { display: block; width: 100%; padding: 28rpx 0; text-align: center; font-size: 32rpx; font-weight: 500; border: none; border-radius: 0; }
+.btn-primary { background: #1f8a4c; color: #fff; } .btn-primary::after { border: none; }
+.btn-secondary { background: #f5f5f7; color: #1d1d1f; border: 1rpx solid rgba(199,199,204,0.5); } .btn-secondary::after { border: none; }
+.template-notice { background: #fffbe6; padding: 32rpx; border: 1rpx solid #ffe58f; }
