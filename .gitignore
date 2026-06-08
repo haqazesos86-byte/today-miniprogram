@@ -1,0 +1,11 @@
+node_modules/
+*.log
+*.swp
+.env
+.env.*
+!.env.example
+*.local
+dist/
+.build/
+.scanner/
+coverage/

@@ -1,0 +1,50 @@
+/* app.wxss — 全局样式 + 主题变量 */
+
+page {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f7;
+  --bg-tertiary: #fafafa;
+  --text-primary: #1d1d1f;
+  --text-secondary: #86868b;
+  --text-tertiary: #c7c7cc;
+  --accent: #1f8a4c;
+  --accent-bg: #1f8a4c;
+  --danger: #ff3b30;
+  --warning: #ff9500;
+  --divider: rgba(199, 199, 204, 0.4);
+  --shadow: rgba(0, 0, 0, 0.08);
+  background: var(--bg-tertiary);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+  font-size: 30rpx;
+  color: var(--text-primary);
+  line-height: 1.5;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+page.dark {
+  --bg-primary: #1d1d1f;
+  --bg-secondary: #2c2c2e;
+  --bg-tertiary: #000000;
+  --text-primary: #f5f5f7;
+  --text-secondary: #98989d;
+  --text-tertiary: #636366;
+  --accent: #30d158;
+  --accent-bg: #30d158;
+  --divider: rgba(84, 84, 88, 0.6);
+  --shadow: rgba(0, 0, 0, 0.4);
+}
+
+.flex-row { display: flex; flex-direction: row; align-items: center; }
+.flex-col { display: flex; flex-direction: column; }
+.flex-1 { flex: 1; }
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+.accent { color: var(--accent); }
+.accent-bg { background: var(--accent-bg); }
+.no-radius { border-radius: 0 !important; }
+
+button {
+  padding: 0; margin: 0; background: transparent; border: none; line-height: normal;
+  color: inherit;
+}
+button::after { border: none; }

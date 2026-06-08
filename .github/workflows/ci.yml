@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: Lint + Unit Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: node-version: '20'
+      - name: Lint JavaScript
+        run: |
+          for f in $(find miniprogram -name "*.js"); do node --check "$f" && echo "OK $f" || exit 1; done
+          for f in $(find cloudfunctions -name "index.js" -not -path "*/node_modules/*"); do node --check "$f" && echo "OK $f" || exit 1; done
+      - name: Validate JSON
+        run: |
+          for f in $(find . -name "*.json" -not -path "*/node_modules/*" -not -path "*/.git/*"); do node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" && echo "OK $f" || exit 1; done
+      - name: Run unit tests
+        run: bash scripts/test.sh
+  e2e:
+    name: E2E (需要 secrets)
+    runs-on: macos-latest
+    if: github.event_name == 'push'
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: node-version: '20'
+      - run: npm install --no-save miniprogram-automator
+      - run: echo "E2E placeholder - 需要 WECHAT_APPID + WECHAT_PRIVATE_KEY secrets"
