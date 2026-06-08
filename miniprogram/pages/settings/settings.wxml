@@ -1,0 +1,53 @@
+<view class="page">
+  <view class="section">
+    <view class="section-title">主题</view>
+    <view class="theme-list">
+      <view class="theme-item {{theme === 'light' ? 'active' : ''}}" bindtap="setTheme" data-theme="light">
+        <view class="theme-preview light"></view>
+        <view class="theme-name">浅色</view>
+      </view>
+      <view class="theme-item {{theme === 'dark' ? 'active' : ''}}" bindtap="setTheme" data-theme="dark">
+        <view class="theme-preview dark"></view>
+        <view class="theme-name">深色</view>
+      </view>
+      <view class="theme-item {{theme === 'auto' ? 'active' : ''}}" bindtap="setTheme" data-theme="auto">
+        <view class="theme-preview auto"></view>
+        <view class="theme-name">跟随系统</view>
+      </view>
+    </view>
+  </view>
+  <view class="section">
+    <view class="section-title">每日提醒时间</view>
+    <view class="time-row">
+      <text class="time-label">推送时间</text>
+      <picker mode="time" value="{{remindTime}}" bindchange="onTimeChange">
+        <view class="time-picker">
+          <text class="time-value">{{remindTime}}</text>
+          <text class="time-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+    <view class="time-hint">每天这个时间点会推送当天未完成的任务数（需在订阅消息页开启授权）</view>
+  </view>
+  <view class="section">
+    <view class="section-title">数据管理</view>
+    <view class="action-row" bindtap="onExport"><text class="action-label">📦 导出全部数据</text><text class="action-arrow">›</text></view>
+    <view class="action-row" bindtap="onGoFeedback"><text class="action-label">💌 意见反馈</text><text class="action-arrow">›</text></view>
+    <view class="action-row" bindtap="onContact"><text class="action-label">💬 联系客服</text><text class="action-arrow">›</text></view>
+    <view class="action-row" bindtap="onShowAgreement"><text class="action-label">📄 隐私协议 / 用户协议</text><text class="action-arrow">›</text></view>
+    <view class="action-row" bindtap="onShowOnboarding"><text class="action-label">🎬 查看引导</text><text class="action-arrow">›</text></view>
+    <view class="action-row danger" bindtap="onClearAll"><text class="action-label">🗑️ 清空所有任务</text><text class="action-arrow">›</text></view>
+  </view>
+  <view class="section">
+    <view class="section-title">需要帮助？</view>
+    <button class="contact-btn" open-type="contact" bindcontact="onContactEvent"><text>💬 进入客服会话</text></button>
+    <view class="contact-hint">点击进入客服对话，开发者会尽快回复</view>
+  </view>
+  <view class="section">
+    <view class="section-title">关于</view>
+    <view class="about-row"><text class="about-label">版本</text><text class="about-value">v0.5.0</text></view>
+    <view class="about-row"><text class="about-label">存储</text><text class="about-value">微信云开发 CloudBase</text></view>
+    <view class="about-row"><text class="about-label">设计</text><text class="about-value">零层级 · 零圆角 · 零 tab</text></view>
+  </view>
+  <view class="footer">今天 · 让每一天都被记住</view>
+</view>

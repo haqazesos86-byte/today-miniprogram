@@ -1,0 +1,13 @@
+<view class="page">
+  <swiper class="swiper" indicator-dots="{{true}}" indicator-color="rgba(199,199,204,0.5)" indicator-active-color="#1f8a4c" circular="{{false}}" bindchange="onSwiperChange" current="{{current}}">
+    <swiper-item><view class="slide"><view class="slide-emoji">📅</view><view class="slide-title">每天只需一个清单</view><view class="slide-desc">不是待办软件、不是项目管理<br/>只是把今天的事写下来</view></view></swiper-item>
+    <swiper-item><view class="slide"><view class="slide-emoji">🌱</view><view class="slide-title">零层级、零圆角、零 tab</view><view class="slide-desc">没有学习成本<br/>打开就能用，闭眼也能用</view></view></swiper-item>
+    <swiper-item><view class="slide"><view class="slide-emoji">📊</view><view class="slide-title">看你坚持的痕迹</view><view class="slide-desc">连续打卡、每周完成率<br/>数据在云端，换手机也在</view></view></swiper-item>
+    <swiper-item><view class="slide"><view class="slide-emoji">☕️</view><view class="slide-title">今天可以偷个懒了</view><view class="slide-desc">没有任务的日子也是好日子</view></view></swiper-item>
+  </swiper>
+  <view class="footer">
+    <view wx:if="{{current < 3}}" class="btn-skip" bindtap="onSkip">跳过</view>
+    <view wx:else class="btn-skip" bindtap="onSkip"></view>
+    <view class="btn-primary" bindtap="onNext">{{current < 3 ? '下一步' : '开始使用'}}</view>
+  </view>
+</view>

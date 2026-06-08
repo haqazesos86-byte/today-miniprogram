@@ -1,0 +1,42 @@
+<view class="page">
+  <view class="hero">
+    <view class="hero-emoji">💌</view>
+    <view class="hero-title">告诉我们你在想什么</view>
+    <view class="hero-desc">你的反馈会直接送达开发者</view>
+  </view>
+  <view class="section">
+    <view class="section-title">反馈类型</view>
+    <view class="type-list">
+      <view wx:for="{{types}}" wx:key="value" class="type-item {{form.type === item.value ? 'active' : ''}}" data-value="{{item.value}}" bindtap="onTypeTap">
+        <view class="type-emoji">{{item.emoji}}</view>
+        <view class="type-name">{{item.name}}</view>
+      </view>
+    </view>
+  </view>
+  <view class="section">
+    <view class="section-title">详细描述</view>
+    <textarea class="textarea" placeholder="请描述你的问题或建议..." maxlength="1000" auto-height value="{{form.content}}" bindinput="onContentInput"></textarea>
+    <view class="char-count">{{form.content.length}} / 1000</view>
+  </view>
+  <view class="section">
+    <view class="section-title">联系方式（可选）</view>
+    <input class="input" type="text" placeholder="微信号/邮箱（仅开发者可见，用于回复）" maxlength="100" value="{{form.contact}}" bindinput="onContactInput" />
+  </view>
+  <view class="device-info">
+    <view class="device-label">附加信息（自动）</view>
+    <view class="device-text">{{deviceInfo}}</view>
+  </view>
+  <view class="action-area">
+    <button class="btn-submit {{submitting ? 'disabled' : ''}}" bindtap="onSubmit" disabled="{{submitting || !form.content}}">{{submitting ? '提交中...' : '提交反馈'}}</button>
+  </view>
+  <view class="section history" wx:if="{{history.length > 0}}">
+    <view class="section-title">历史反馈</view>
+    <view wx:for="{{history}}" wx:key="_id" class="history-item">
+      <view class="history-meta">
+        <text class="history-type">{{item.typeLabel}}</text>
+        <text class="history-time">{{item.timeLabel}}</text>
+      </view>
+      <view class="history-content">{{item.content}}</view>
+    </view>
+  </view>
+</view>
