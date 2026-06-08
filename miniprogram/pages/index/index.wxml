@@ -1,0 +1,215 @@
+<!--pages/index/index.wxml-->
+<view class="page">
+
+  <!-- 日期头部 -->
+  <view class="date-header">
+    <view class="date-info">
+      <view class="date-title">{{dateTitle}}</view>
+      <view class="date-subtitle">{{dateSubtitle}}</view>
+    </view>
+    <view class="date-nav">
+      <view class="nav-btn" bindtap="goPrev">
+        <text class="nav-icon">‹</text>
+      </view>
+      <view class="nav-btn" bindtap="goNext">
+        <text class="nav-icon">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 过滤栏 -->
+  <view class="filter-bar" wx:if="{{!isEmpty}}">
+    <view class="filter-tabs">
+      <view class="filter-tab {{filterMode === 'all' ? 'active' : ''}}"
+            bindtap="setFilter" data-mode="all">全部 {{counts.all}}</view>
+      <view class="filter-tab {{filterMode === 'undone' ? 'active' : ''}}"
+            bindtap="setFilter" data-mode="undone">未完成 {{counts.undone}}</view>
+      <view class="filter-tab {{filterMode === 'done' ? 'active' : ''}}"
+            bindtap="setFilter" data-mode="done">已完成 {{counts.done}}</view>
+    </view>
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <input class="search-input"
+             type="text"
+             placeholder="搜索任务"
+             value="{{searchText}}"
+             bindinput="onSearchInput"
+             bindconfirm="onSearchConfirm" />
+      <text wx:if="{{searchText}}" class="search-clear" bindtap="onSearchClear">×</text>
+    </view>
+  </view>
+
+  <!-- 滑动提示（左右滑切换日期） -->
+  <view class="list-wrapper"
+        bindtouchstart="touchStart"
+        bindtouchend="touchEnd">
+
+    <!-- 加载中骨架屏 -->
+    <view class="skeleton" wx:if="{{loading}}">
+      <view class="skeleton-row" wx:for="{{[1,2,3]}}" wx:key="*this"></view>
+    </view>
+
+    <!-- 错误状态（重试按钮） -->
+    <view class="error-state" wx:elif="{{hasError}}">
+      <view class="error-emoji">⚠️</view>
+      <view class="error-text">{{errorText}}</view>
+      <view class="error-retry" bindtap="onRetry">重新加载</view>
+    </view>
+
+    <!-- 空状态（区分：搜索无结果 vs 今日无任务） -->
+    <view class="empty-state" wx:elif="{{isEmpty}}">
+      <view wx:if="{{searchText}}" class="empty-emoji">🔍</view>
+      <view wx:else class="empty-emoji">☕️</view>
+      <view wx:if="{{searchText}}" class="empty-text">没找到 "{{searchText}}"</view>
+      <view wx:else class="empty-text">今天可以偷个懒了</view>
+      <view wx:if="{{searchText}}" class="empty-hint" bindtap="onSearchClear">清除搜索</view>
+    </view>
+
+    <!-- 任务列表（未完成） -->
+    <view class="task-list" wx:else>
+      <!-- 添加任务行 -->
+      <view wx:if="{{addingMode}}" class="add-row">
+        <text class="add-row-icon">+</text>
+        <view class="add-row-fields">
+          <input class="add-row-input"
+                 type="text"
+                 placeholder="任务内容"
+                 value="{{newTaskText}}"
+                 focus="{{addingMode}}"
+                 bindinput="onAddInput"
+                 bindblur="onAddBlur"
+                 bindconfirm="onAddConfirm" />
+          <view wx:if="{{newTaskDueDate}}" class="add-row-due">
+            <text>📅 截止 {{newTaskDueDate}}</text>
+            <text class="add-row-due-clear" catchtap="onClearDue">×</text>
+          </view>
+        </view>
+        <view class="add-row-tag" bindtap="onPickTag">
+          <text wx:if="{{newTaskTag}}">#{{newTaskTag}}</text>
+          <text wx:else>标签</text>
+        </view>
+        <view class="add-row-tag" bindtap="onPickDue">
+          <text wx:if="{{newTaskDueDate}}">📅</text>
+          <text wx:else>📅</text>
+        </view>
+      </view>
+
+      <movable-area wx:if="{{filterMode !== 'done'}}"
+                     wx:for="{{filteredUndone}}"
+                     wx:key="id"
+                     class="task-row-wrapper"
+                     data-id="{{item.id}}">
+        <movable-view class="task-row"
+                      direction="horizontal"
+                      inertia="true"
+                      out-of-bounds="true"
+                      damping="50"
+                      friction="30"
+                      x="{{item.offsetX || 0}}"
+                      bindchange="onSwipeChange"
+                      bindtouchstart="onItemTouchStart"
+                      bindtouchend="onItemTouchEnd"
+                      data-index="{{index}}"
+                      data-list="undone">
+          <view class="task-row-content"
+                bindtap="onTaskTap"
+                data-id="{{item.id}}"
+                data-list="undone"
+                bindlongpress="onTaskLongPress">
+            <view class="task-priority {{item.priority || 'normal'}}"
+                  wx:if="{{item.priority && item.priority !== 'normal'}}">
+              <text wx:if="{{item.priority === 'high'}}">⭐</text>
+            </view>
+            <view class="task-checkbox {{item.isDone ? 'checked' : ''}}"
+                  catchtap="onCheckTap"
+                  data-id="{{item.id}}"
+                  data-list="undone">
+              <text wx:if="{{item.isDone}}" class="checkmark">✓</text>
+            </view>
+            <view class="task-text {{item.isDone ? 'done' : ''}} {{item.overdue ? 'overdue' : ''}}">
+              <text wx:if="{{item.tag}}" class="task-tag-inline">#{{item.tag}}</text>
+              <text>{{item.text}}</text>
+              <text wx:if="{{item.dueDate && !item.isDone}}" class="task-due {{item.overdue ? 'overdue' : ''}}">
+                📅 {{item.dueDateLabel || item.dueDate}}
+              </text>
+            </view>
+          </view>
+          <view class="task-actions">
+            <view class="task-action edit" catchtap="onEditTap" data-id="{{item.id}}" data-list="undone">编辑</view>
+            <view class="task-action delete" catchtap="onDeleteTap" data-id="{{item.id}}" data-list="undone">删除</view>
+          </view>
+        </movable-view>
+      </movable-area>
+
+      <!-- 分割线 -->
+      <view wx:if="{{hasCompleted && filterMode === 'all'}}" class="divider"></view>
+
+      <!-- 已完成列表 -->
+      <movable-area wx:if="{{filterMode !== 'undone'}}"
+                     wx:for="{{filteredDone}}"
+                     wx:key="id"
+                     class="task-row-wrapper done-wrapper"
+                     data-id="{{item.id}}">
+        <movable-view class="task-row done-row"
+                      direction="horizontal"
+                      inertia="true"
+                      out-of-bounds="true"
+                      damping="50"
+                      friction="30"
+                      x="{{item.offsetX || 0}}"
+                      bindchange="onSwipeChange"
+                      bindtouchstart="onItemTouchStart"
+                      bindtouchend="onItemTouchEnd"
+                      data-index="{{index}}"
+                      data-list="done">
+          <view class="task-row-content"
+                bindtap="onTaskTap"
+                data-id="{{item.id}}"
+                data-list="done"
+                bindlongpress="onTaskLongPress">
+            <view class="task-priority {{item.priority || 'normal'}}"
+                  wx:if="{{item.priority && item.priority !== 'normal'}}">
+              <text wx:if="{{item.priority === 'high'}}">⭐</text>
+            </view>
+            <view class="task-checkbox checked"
+                  catchtap="onCheckTap"
+                  data-id="{{item.id}}"
+                  data-list="done">
+              <text class="checkmark">✓</text>
+            </view>
+            <view class="task-text done">
+              <text wx:if="{{item.tag}}" class="task-tag-inline">#{{item.tag}}</text>
+              <text>{{item.text}}</text>
+            </view>
+          </view>
+          <view class="task-actions">
+            <view class="task-action edit" catchtap="onEditTap" data-id="{{item.id}}" data-list="done">编辑</view>
+            <view class="task-action delete" catchtap="onDeleteTap" data-id="{{item.id}}" data-list="done">删除</view>
+          </view>
+        </movable-view>
+      </movable-area>
+    </view>
+
+  </view>
+
+  <!-- 底部浮动 + 按钮（不是 input bar，而是触发 addingMode） -->
+  <view wx:if="{{!addingMode}}" class="fab-add" bindtap="onFabTap">
+    <text class="fab-add-icon">+</text>
+  </view>
+
+  <!-- 跳转统计页 -->
+  <navigator url="/pages/stats/stats" class="stats-fab">
+    <text>📊</text>
+  </navigator>
+
+  <!-- 跳转提醒设置页 -->
+  <navigator url="/pages/remind/remind" class="remind-fab">
+    <text>🔔</text>
+  </navigator>
+
+  <!-- 跳转设置页 -->
+  <navigator url="/pages/settings/settings" class="settings-fab">
+    <text>⚙️</text>
+  </navigator>
+
+</view>

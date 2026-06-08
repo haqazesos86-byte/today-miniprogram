@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "今 天",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "enablePullDownRefresh": false
+}
