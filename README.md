@@ -1,36 +1,33 @@
-# Today — 今 天
+# Today 微信小程序 — 精简 1:1 移植 iOS SwiftUI 原版
 
-> 极简每日待办清单 · 微信小程序版 · iOS / Android 通用
+从 [Today-iOS-SwiftUI](https://github.com/haqazesos86-byte/Today-iOS) 1:1 移植的微信小程序版。
+原 iOS 项目用 SwiftData + iCloud 同步，小程序版改用 wx.setStorage 本地存储。
 
-**极简**——零层级、零圆角、零 tab。打开就能用。
+## 架构对照
 
-## 功能
+| iOS SwiftUI 原版 | 微信小程序版 |
+|---|---|
+| TodayApp.swift | app.js |
+| ContentView.swift | pages/index/index.wxml |
+| TaskListViewModel.swift | pages/index/index.js |
+| TaskItem.swift (SwiftData) | utils/storage.js |
+| Date 扩展 | utils/date.js |
+| DateHeaderView / EmptyStateView / TaskRowView / DividerView | 全部在 index.wxml 内联 |
 
-- 每日任务清单（添加/勾选/编辑/删除）
-- 标签 (#工作 #生活 #学习) + 优先级
-- 截止日期 + 过期自动标红
-- 搜索 + 3-tab 过滤
-- 滑动切换日期
-- 统计趋势图 + 完成率 + 连续打卡
-- 订阅消息提醒
-- 浅色/深色主题
-- 意见反馈 + 客服消息
+## 核心交互（与 iOS 完全一致）
 
-## 技术栈
+- 大标题「今天」+ 副标题「6月9日 星期二」+ 左右切换箭头
+- 任务列表：未完成在上，已完成在分割线下方（按完成时间倒序）
+- 圆圈勾选 + 文字 + 弹簧动画
+- 滑动切日期（横向 dx > 100px）
+- 左滑删除（红色「删除」按钮）
+- 底部固定输入栏：「+ 写下来」，回车提交
+- 空状态：「今天可以偷个懒了 ☕️」
 
-- 微信小程序原生（WXML + WXSS + JS）
-- 微信云开发（云函数 + 云数据库）
-- 纯 Canvas 2D 图表
-- CSS 变量主题系统
-- 24h TTL 本地缓存
-- ~50KB（无第三方依赖）
+## 怎么跑
 
-## 测试
+1. 装 [微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)
+2. 「导入项目」选这个目录，AppID 选「测试号」即可
+3. Ctrl+B 编译，扫码预览
 
-```bash
-bash scripts/test.sh
-```
-
-## License
-
-MIT
+**零 AppID、零云开发、零依赖**。直接跑。
